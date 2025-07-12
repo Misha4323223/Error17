@@ -1,0 +1,43 @@
+❌ Ошибка инициализации нейросети: TypeError: tf.layers.multiHeadAttention is not a function
+    at BooomerangsNeuralCore.createTransformerBlock (/home/runner/workspace/server/neural-network-core.js:166:33)
+    at BooomerangsNeuralCore.createAdvancedTransformer (/home/runner/workspace/server/neural-network-core.js:133:16)
+    at BooomerangsNeuralCore.initialize (/home/runner/workspace/server/neural-network-core.js:43:29)
+    at async NeuralIntegrationLayer.initialize (/home/runner/workspace/server/neural-integration.cjs:23:7)
+    at async initializeNeuralIntegration (/home/runner/workspace/server/neural-integration.cjs:213:5)
+    at async /home/runner/workspace/server/neural-api-routes.js:14:25
+ℹ️ [2025-07-11T07:42:12.197Z] SEMANTIC INFO: ✅ Модуль semantic-memory загружен успешно 
+❌ Ошибка инициализации Neural API: TypeError: tf.layers.multiHeadAttention is not a function
+    at BooomerangsNeuralCore.createTransformerBlock (/home/runner/workspace/server/neural-network-core.js:166:33)
+    at BooomerangsNeuralCore.createAdvancedTransformer (/home/runner/workspace/server/neural-network-core.js:133:16)
+    at BooomerangsNeuralCore.initialize (/home/runner/workspace/server/neural-network-core.js:43:29)
+    at async NeuralIntegrationLayer.initialize (/home/runner/workspace/server/neural-integration.cjs:23:7)
+    at async initializeNeuralIntegration (/home/runner/workspace/server/neural-integration.cjs:213:5)
+    at async /home/runner/workspace/server/neural-api-routes.js:14:25
+ℹ️ [2025-07-11T07:42:12.197Z] SEMANTIC INFO: ✅ Семантическая память загружена 
+ℹ️ [2025-07-11T07:42:12.202Z] SEMANTIC INFO: ✅ Модуль intelligent-chat-processor загружен успешно 
+ℹ️ [2025-07-11T07:42:12.202Z] SEMANTIC INFO: ✅ Интеллектуальный процессор загружен 
+ℹ️ [2025-07-11T07:42:12.202Z] SEMANTIC INFO: 🎯 Инициализация модулей завершена 
+node:internal/modules/cjs/loader:1225
+  const err = new Error(message);
+              ^
+
+Error: Cannot find module './deepspeek-provider'
+Require stack:
+- /home/runner/workspace/server/deepspeek-routes.js
+- /home/runner/workspace/server/routes.ts
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1225:15)
+    at nextResolveSimple (/home/runner/workspace/node_modules/tsx/dist/register-D46fvsV_.cjs:4:1004)
+    at /home/runner/workspace/node_modules/tsx/dist/register-D46fvsV_.cjs:3:2630
+    at /home/runner/workspace/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1542
+    at resolveTsPaths (/home/runner/workspace/node_modules/tsx/dist/register-D46fvsV_.cjs:4:760)
+    at /home/runner/workspace/node_modules/tsx/dist/register-D46fvsV_.cjs:4:1102
+    at m._resolveFilename (file:///home/runner/workspace/node_modules/tsx/dist/register-B7jrtLTO.mjs:1:789)
+    at Module._load (node:internal/modules/cjs/loader:1051:27)
+    at Module.require (node:internal/modules/cjs/loader:1311:19)
+    at require (node:internal/modules/helpers:179:18) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/runner/workspace/server/deepspeek-routes.js',
+    '/home/runner/workspace/server/routes.ts'
+  ]
+}

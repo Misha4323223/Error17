@@ -1,0 +1,31 @@
+{
+  "filename": "vectorized_1751198228011.svg",
+  "timestamp": 1751198228011,
+  "sourceUrl": "https://image.pollinations.ai/prompt/photorealistic%2C%20hyperrealistic%2C%20Create%20a%20photorealistic%20image%20featuring%20my%20name%2C%20artistically%20integrated%20into%20the%20composition.%20Use%20intricate%20details%2C%20balanced%20lighting%2C%20and%20a%20harmonious%20color%20palette%20to%20ensure%20the%20name%20stands%20out%20elegantly%20while%20blending%20seamlessly%20with%20the%20surrounding%20environment.%20Add%20subtle%20textures%20and%20depth%20to%20enhance%20realism.%2C%20detailed%20skin%20texture%2C%20natural%20proportions%2C%20professional%20portrait%20photography%2C%20studio%20lighting%2C%20authentic%20materials%2C%20lifelike%20details?width=3072&height=3072&nologo=true&enhance=true&model=flux-pro&seed=1751198167287&quality=ultra",
+  "svgSize": 2998331,
+  "options": {
+    "ltres": 1,
+    "qtres": 1,
+    "pathomit": 8,
+    "colorsampling": 1,
+    "numberofcolors": 16,
+    "mincolorratio": 0.02,
+    "colorquantcycles": 3,
+    "scale": 1,
+    "simplifytolerance": 0,
+    "roundcoords": 1,
+    "corsenabled": false,
+    "rightangleenhance": true,
+    "layering": 0,
+    "strokewidth": 1,
+    "linefilter": false,
+    "viewbox": false,
+    "desc": false,
+    "lcpr": 0,
+    "qcpr": 0,
+    "blurradius": 0,
+    "blurdelta": 20
+  },
+  "vectorizer": "ImageTracerJS",
+  "version": "1.2.6"
+}

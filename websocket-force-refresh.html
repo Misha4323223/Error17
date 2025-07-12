@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Debug Test</title>
+</head>
+<body>
+    <h1>WebSocket Connection Test</h1>
+    <div id="status">Connecting...</div>
+    <div id="log"></div>
+    
+    <script>
+        const log = document.getElementById('log');
+        const status = document.getElementById('status');
+        
+        function addLog(message) {
+            log.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + message + '</div>';
+        }
+        
+        addLog('🎯 Testing WebSocket connection to ws://localhost:5000/api/ws');
+        
+        const ws = new WebSocket('ws://localhost:5000/api/ws');
+        
+        ws.onopen = function() {
+            status.textContent = 'Connected ✅';
+            addLog('✅ WebSocket подключен успешно!');
+        };
+        
+        ws.onerror = function(error) {
+            status.textContent = 'Error ❌';
+            addLog('❌ WebSocket ошибка: ' + JSON.stringify(error));
+        };
+        
+        ws.onclose = function() {
+            status.textContent = 'Disconnected 🔌';
+            addLog('🔌 WebSocket соединение закрыто');
+        };
+        
+        ws.onmessage = function(event) {
+            addLog('📨 Получено сообщение: ' + event.data);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+ЭТАП 4: ДОБАВЛЕНИЕ НОВЫХ СТРАТЕГИЙ ОТВЕТОВ
+Файл: server/semantic-memory/natural-language-generator.cjs
+Строки: 178-189 (switch statement в generateLivingResponse)
+
+Добавить новые case'ы:
+
+switch (strategy) {
+  case 'empathetic_response':
+    return this.generateEmpathetic Response(thought);
+  case 'clarification_response':
+    return this.generateClarificationResponse(thought);
+  case 'adaptive_conversation':
+    return this.generateAdaptiveResponse(thought);
+  // ... существующие case'ы
+  default:
+    return this.generateAdaptiveResponse(thought); // Вместо generateConversationalResponse
+}
+ЭТАП 5: ДОБАВЛЕНИЕ НОВЫХ ФУНКЦИЙ ГЕНЕРАЦИИ
+Файл: server/semantic-memory/natural-language-generator.cjs
+После строки 650, добавить новые функции:
+
+/**
+ * Эмпатичный ответ на эмоциональные выражения
+ */
+generateEmpathetic Response(thought) {
+  const input = thought.userInput.toLowerCase();
+  
+  if (input.includes('чертина') || input.includes('черт')) {
+    return `Ого, вижу ты эмоционально настроен! 😅 
+    
+Что произошло? Иногда хорошо выпустить пар. Готов выслушать или помочь решить проблему!`;
+  }
+  
+  return `Понимаю твое настроение! Давай разберемся что к чему и как это исправить.`;
+}
+/**
+ * Ответ на скептические вопросы
+ */
+generateClarificationResponse(thought) {
+  const input = thought.userInput.toLowerCase();
+  
+  if (input.includes('что ты говоришь')) {
+    return `А, ты удивлен моими способностями? 😊 
+    
+Я действительно могу многое: создавать изображения, векторизовать картинки, готовить дизайны для вышивки, и конечно же - хорошо общаться!
+Хочешь проверить? Дай мне любую творческую задачу!`;
+  }
+  
+  return `Понимаю твой скептицизм! Давай я покажу на деле что умею. Какую задачу мне дать?`;
+}
+ЭТАП 6: ИСПРАВЛЕНИЕ СТРУКТУРЫ ВОЗВРАТА В FALLBACK
+Файл: server/conversation-engine.cjs
+Строки: 580-600 (конец функции generateIntelligentFallback)
+
+Текущий код возвращает строку, нужно обернуть в объект:
+
+// В конце функции generateIntelligentFallback заменить:
+return fallbackResponse;
+// На:
+return {
+  response: fallbackResponse,
+  confidence: 0.7,
+  metadata: { 
+    approach: 'intelligent_fallback', 
+    fallback: true,
+    contextUsed: { hasEmotion, hasMeta, hasMemory, hasPersona }
+  }
+};
+ЭТАП 7: УЛУЧШЕНИЕ СЕМАНТИЧЕСКОЙ КЛАССИФИКАЦИИ
+Файл: server/semantic-memory/natural-language-generator.cjs
+Строки: 174-176 (проверка clusterName)
+
+Добавить fallback для пустого clusterName:
+
+// Приоритет семантическому анализу
+if (clusterName && clusterName !== 'unknown') {
+  return this.generateSemanticResponse(thought, clusterName);
+}
+// Если семантика не сработала, используем анализ намерений
+if (thought.understanding && thought.understanding.intent !== 'unknown') {
+  const mappedCluster = this.mapIntentToCluster(thought.understanding.intent);
+  if (mappedCluster) {
+    return this.generateSemanticResponse(thought, mappedCluster);
+  }
+}

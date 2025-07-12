@@ -1,0 +1,23 @@
+❌ Ошибка инициализации нейросети: ValueError: Expected exactly 1 Shape; got 2
+    at new ValueError (/home/runner/workspace/tfjs-layers/src/errors.ts:48:5)
+    at getExactlyOneShape (/home/runner/workspace/tfjs-layers/src/utils/types_utils.ts:76:13)
+    at LayerNormalization.LayerNormalization.build (/home/runner/workspace/tfjs-layers/src/layers/normalization.ts:527:18)
+    at <anonymous> (/home/runner/workspace/tfjs-layers/src/engine/topology.ts:981:14)
+    at nameScope (/home/runner/workspace/tfjs-layers/src/common.ts:48:20)
+    at LayerNormalization.Layer.apply (/home/runner/workspace/tfjs-layers/src/engine/topology.ts:967:12)
+    at BooomerangsNeuralCore.createAdvancedTransformer (/home/runner/workspace/server/neural-network-core.js:130:40)
+    at BooomerangsNeuralCore.initialize (/home/runner/workspace/server/neural-network-core.js:43:29)
+    at async NeuralIntegrationLayer.initialize (/home/runner/workspace/server/neural-integration.cjs:26:7)
+    at async initializeNeuralIntegration (/home/runner/workspace/server/neural-integration.cjs:501:5)
+ℹ️ [2025-07-11T10:39:30.481Z] SEMANTIC INFO: ✅ Модуль semantic-memory загружен успешно 
+❌ Ошибка инициализации Neural API: ValueError: Expected exactly 1 Shape; got 2
+    at new ValueError (/home/runner/workspace/tfjs-layers/src/errors.ts:48:5)
+    at getExactlyOneShape (/home/runner/workspace/tfjs-layers/src/utils/types_utils.ts:76:13)
+    at LayerNormalization.LayerNormalization.build (/home/runner/workspace/tfjs-layers/src/layers/normalization.ts:527:18)
+    at <anonymous> (/home/runner/workspace/tfjs-layers/src/engine/topology.ts:981:14)
+    at nameScope (/home/runner/workspace/tfjs-layers/src/common.ts:48:20)
+    at LayerNormalization.Layer.apply (/home/runner/workspace/tfjs-layers/src/engine/topology.ts:967:12)
+    at BooomerangsNeuralCore.createAdvancedTransformer (/home/runner/workspace/server/neural-network-core.js:130:40)
+    at BooomerangsNeuralCore.initialize (/home/runner/workspace/server/neural-network-core.js:43:29)
+    at async NeuralIntegrationLayer.initialize (/home/runner/workspace/server/neural-integration.cjs:26:7)
+    at async initializeNeuralIntegration (/home/runner/workspace/server/neural-integration.cjs:501:5)

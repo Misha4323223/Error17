@@ -1,0 +1,122 @@
+🔍 [WebSocket] Health check - 0 clients connected
+⏰ [Progress Manager] Время ожидания WebSocket истекло
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+🔍 [WebSocket] Health check - 0 clients connected
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+🔍 [WebSocket] Health check - 0 clients connected
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+12:55:27 PM [express] GET /api/neural/status 200 in 3ms :: {"success":true,"status":"loading","messag…
+12:55:29 PM [express] GET /api/chat/sessions 200 in 1386ms :: {"success":true,"sessions":[{"id":"35",…
+12:55:29 PM [express] GET /api/chat/sessions 200 in 1375ms :: {"success":true,"sessions":[{"id":"35",…
+📋 Загружаем сообщения для сессии 35...
+✅ Найдено 172 сообщений для сессии 35
+12:55:30 PM [express] GET /api/chat/sessions/35/messages 200 in 666ms :: {"success":true,"messages":[…
+🔍 [WebSocket] Health check - 0 clients connected
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+🔍 [WebSocket] Health check - 0 clients connected
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+🔍 [WebSocket] Health check - 0 clients connected
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+🔵 [2025-07-12T12:57:03.219Z] 🚀 Neural Lite initialization requested 
+⚡ Инициализация LITE нейросети для быстрого старта...
+🚀 Начало операции: LITE Neural Network Initialization
+🔗 [Progress Manager] Synchronized with global WebSocket: 0 clients
+📡 Нет подключенных neural клиентов для broadcast
+⚠️ Глобальный WebSocket сервер найден, но клиентов нет
+📊 Прогресс операции "LITE Neural Network Initialization": 10%
+🔗 [Progress Manager] Synchronized with global WebSocket: 0 clients
+📡 Нет подключенных neural клиентов для broadcast
+⚠️ Глобальный WebSocket сервер найден, но клиентов нет
+📡 Broadcasting neural progress to 0 clients: {
+  type: 'neural_progress_update',
+  progress: 10,
+  operation: 'LITE Neural Network Initialization',
+  status: 'running',
+  details: 'Инициализация TensorFlow...',
+  timestamp: '2025-07-12T12:57:03.220Z'
+}
+🧠 Инициализация BOOOMERANGS Neural LITE...
+🔧 Создаем новую LITE модель...
+🚀 Инициализация BOOOMERANGS Neural LITE...
+✅ Семантическая память подключена к LITE
+📂 LITE модель успешно загружена
+📚 LITE словарь загружен: 44 токенов
+🎉 BOOOMERANGS Neural LITE готов к работе!
+📊 Статистика LITE модели:
+   - Параметры: 2,458,412
+   - Архитектура: Lite Transformer (3 layers)
+   - Память: ~9 МБ
+✅ LITE нейросеть инициализирована за 190494мс
+📊 LITE модель: 2,458,412 параметров, ~9МБ
+📊 Прогресс операции "LITE Neural Network Initialization": 25%
+🔗 [Progress Manager] Synchronized with global WebSocket: 0 clients
+📡 Нет подключенных neural клиентов для broadcast
+⚠️ Глобальный WebSocket сервер найден, но клиентов нет
+📡 Broadcasting neural progress to 0 clients: {
+  type: 'neural_progress_update',
+  progress: 25,
+  operation: 'LITE Neural Network Initialization',
+  status: 'running',
+  details: 'Создание облегченной архитектуры...',
+  timestamp: '2025-07-12T12:57:03.723Z'
+}
+📊 Прогресс операции "LITE Neural Network Initialization": 50%
+🔗 [Progress Manager] Synchronized with global WebSocket: 0 clients
+📡 Нет подключенных neural клиентов для broadcast
+⚠️ Глобальный WebSocket сервер найден, но клиентов нет
+📡 Broadcasting neural progress to 0 clients: {
+  type: 'neural_progress_update',
+  progress: 50,
+  operation: 'LITE Neural Network Initialization',
+  status: 'running',
+  details: 'Построение словаря...',
+  timestamp: '2025-07-12T12:57:04.726Z'
+}
+📊 Прогресс операции "LITE Neural Network Initialization": 75%
+🔗 [Progress Manager] Synchronized with global WebSocket: 0 clients
+📡 Нет подключенных neural клиентов для broadcast
+⚠️ Глобальный WebSocket сервер найден, но клиентов нет
+📡 Broadcasting neural progress to 0 clients: {
+  type: 'neural_progress_update',
+  progress: 75,
+  operation: 'LITE Neural Network Initialization',
+  status: 'running',
+  details: 'Компиляция модели...',
+  timestamp: '2025-07-12T12:57:06.227Z'
+}
+📊 Прогресс операции "LITE Neural Network Initialization": 90%
+🔗 [Progress Manager] Synchronized with global WebSocket: 0 clients
+📡 Нет подключенных neural клиентов для broadcast
+⚠️ Глобальный WebSocket сервер найден, но клиентов нет
+📡 Broadcasting neural progress to 0 clients: {
+  type: 'neural_progress_update',
+  progress: 90,
+  operation: 'LITE Neural Network Initialization',
+  status: 'running',
+  details: 'Финализация инициализации...',
+  timestamp: '2025-07-12T12:57:08.228Z'
+}
+✅ Операция "LITE Neural Network Initialization" завершена за 6009мс
+🔗 [Progress Manager] Synchronized with global WebSocket: 0 clients
+📡 Нет подключенных neural клиентов для broadcast
+⚠️ Глобальный WebSocket сервер найден, но клиентов нет
+12:57:09 PM [express] POST /api/neural/init-lite 200 in 6012ms :: {"success":true,"message":"Lite neu…
+🔍 [WebSocket] Health check - 0 clients connected
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+🔍 [WebSocket] Health check - 0 clients connected
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+🔍 [WebSocket] Health check - 0 clients connected
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+🔍 [WebSocket] Health check - 0 clients connected
+🔍 [WebSocket] Health check - 0 clients connected
+🔄 [WebSocket] Progress Manager synchronized: 0 clients
+🔍 [WebSocket] Health check - 0 clients connected

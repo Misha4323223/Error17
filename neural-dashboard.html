@@ -1,0 +1,514 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOOOMERANGS Neural Network Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .input-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .response-area {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #cce8ff;
+            color: #004085;
+            border: 1px solid #b3d9ff;
+        }
+
+        .log-area {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            height: 200px;
+            overflow-y: auto;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 BOOOMERANGS Neural Network</h1>
+            <p>Управление Transformer-based нейросетью</p>
+        </div>
+
+        <div class="dashboard">
+            <!-- Статистика системы -->
+            <div class="card">
+                <h3>📊 Статистика системы</h3>
+                <div id="system-status" class="status info">Загрузка...</div>
+                <div class="stats-grid" id="stats-grid">
+                    <!-- Статистика загружается динамически -->
+                </div>
+                <button class="btn" onclick="loadStats()">🔄 Обновить статистику</button>
+            </div>
+
+            <!-- Генерация ответов -->
+            <div class="card">
+                <h3>🤖 Генерация ответов</h3>
+                <div class="input-group">
+                    <label for="query-input">Введите запрос:</label>
+                    <textarea id="query-input" placeholder="Напишите ваш вопрос..."></textarea>
+                </div>
+                <button class="btn" onclick="generateResponse()" id="generate-btn">
+                    🧠 Генерировать ответ
+                </button>
+                <div id="response-area" class="response-area">
+                    Ответ появится здесь...
+                </div>
+            </div>
+
+            <!-- Обучение модели -->
+            <div class="card">
+                <h3>🔥 Обучение модели</h3>
+                <div class="input-group">
+                    <label for="epochs">Количество эпох:</label>
+                    <input type="number" id="epochs" value="3" min="1" max="10">
+                </div>
+                <div class="input-group">
+                    <label for="batch-size">Размер батча:</label>
+                    <input type="number" id="batch-size" value="4" min="1" max="16">
+                </div>
+                <button class="btn" onclick="startTraining()" id="train-btn">
+                    🔥 Начать обучение
+                </button>
+                <div id="training-status" class="status info" style="display: none;">
+                    Обучение не запущено
+                </div>
+            </div>
+
+            <!-- Добавление примеров -->
+            <div class="card">
+                <h3>📝 Добавить пример обучения</h3>
+                <div class="input-group">
+                    <label for="example-query">Запрос:</label>
+                    <input type="text" id="example-query" placeholder="Пример запроса">
+                </div>
+                <div class="input-group">
+                    <label for="example-response">Ответ:</label>
+                    <textarea id="example-response" placeholder="Желаемый ответ"></textarea>
+                </div>
+                <button class="btn" onclick="addTrainingExample()">
+                    ➕ Добавить пример
+                </button>
+            </div>
+
+            <!-- Тестирование -->
+            <div class="card">
+                <h3>🎯 Тестирование нейросети</h3>
+                <button class="btn" onclick="runTests()">🧪 Запустить тесты</button>
+                <div id="test-results" class="response-area">
+                    Результаты тестов появятся здесь...
+                </div>
+            </div>
+
+            <!-- Логи -->
+            <div class="card">
+                <h3>📋 Логи системы</h3>
+                <div id="logs" class="log-area">
+                    Система загружается...
+                </div>
+                <button class="btn" onclick="clearLogs()">🗑️ Очистить логи</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let logs = [];
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            logs.push(logEntry);
+            
+            const logsElement = document.getElementById('logs');
+            logsElement.textContent = logs.slice(-50).join('\n');
+            logsElement.scrollTop = logsElement.scrollHeight;
+        }
+
+        function clearLogs() {
+            logs = [];
+            document.getElementById('logs').textContent = '';
+        }
+
+        async function loadStats() {
+            try {
+                log('🔄 Загрузка статистики...');
+                
+                const response = await fetch('/api/neural/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const stats = data.stats;
+                    const statusElement = document.getElementById('system-status');
+                    const statsGrid = document.getElementById('stats-grid');
+                    
+                    statusElement.textContent = stats.isInitialized ? 
+                        '✅ Нейросеть активна' : '❌ Нейросеть не инициализирована';
+                    statusElement.className = `status ${stats.isInitialized ? 'success' : 'error'}`;
+                    
+                    statsGrid.innerHTML = `
+                        <div class="stat-item">
+                            <div class="stat-value">${stats.neural?.vocabSize || 'N/A'}</div>
+                            <div class="stat-label">Размер словаря</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${stats.neural?.numLayers || 'N/A'}</div>
+                            <div class="stat-label">Слоёв</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${stats.neural?.numHeads || 'N/A'}</div>
+                            <div class="stat-label">Attention голов</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${stats.neural?.totalParams || 'N/A'}</div>
+                            <div class="stat-label">Параметров</div>
+                        </div>
+                    `;
+                    
+                    log('✅ Статистика загружена');
+                } else {
+                    throw new Error(data.error);
+                }
+                
+            } catch (error) {
+                log(`❌ Ошибка загрузки статистики: ${error.message}`, 'error');
+                document.getElementById('system-status').textContent = '❌ Ошибка подключения';
+                document.getElementById('system-status').className = 'status error';
+            }
+        }
+
+        async function generateResponse() {
+            const queryInput = document.getElementById('query-input');
+            const responseArea = document.getElementById('response-area');
+            const generateBtn = document.getElementById('generate-btn');
+            
+            const query = queryInput.value.trim();
+            if (!query) {
+                alert('Введите запрос');
+                return;
+            }
+            
+            try {
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<div class="loading"></div> Генерация...';
+                responseArea.textContent = 'Генерирую ответ...';
+                
+                log(`🤖 Генерация ответа для: "${query}"`);
+                
+                const response = await fetch('/api/neural/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ input: query })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    responseArea.textContent = data.response;
+                    log('✅ Ответ сгенерирован');
+                } else {
+                    throw new Error(data.error);
+                }
+                
+            } catch (error) {
+                responseArea.textContent = `Ошибка: ${error.message}`;
+                log(`❌ Ошибка генерации: ${error.message}`, 'error');
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '🧠 Генерировать ответ';
+            }
+        }
+
+        async function startTraining() {
+            const epochs = document.getElementById('epochs').value;
+            const batchSize = document.getElementById('batch-size').value;
+            const trainBtn = document.getElementById('train-btn');
+            const statusElement = document.getElementById('training-status');
+            
+            try {
+                trainBtn.disabled = true;
+                trainBtn.innerHTML = '<div class="loading"></div> Обучение...';
+                statusElement.style.display = 'block';
+                statusElement.textContent = 'Запуск обучения...';
+                statusElement.className = 'status info';
+                
+                log(`🔥 Запуск обучения: ${epochs} эпох, batch size ${batchSize}`);
+                
+                const response = await fetch('/api/neural/train', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ epochs: parseInt(epochs), batchSize: parseInt(batchSize) })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    statusElement.textContent = '🔥 Обучение запущено в фоне';
+                    statusElement.className = 'status success';
+                    log('✅ Обучение запущено');
+                } else {
+                    throw new Error(data.error);
+                }
+                
+            } catch (error) {
+                statusElement.textContent = `Ошибка: ${error.message}`;
+                statusElement.className = 'status error';
+                log(`❌ Ошибка обучения: ${error.message}`, 'error');
+            } finally {
+                trainBtn.disabled = false;
+                trainBtn.innerHTML = '🔥 Начать обучение';
+            }
+        }
+
+        async function addTrainingExample() {
+            const query = document.getElementById('example-query').value.trim();
+            const response = document.getElementById('example-response').value.trim();
+            
+            if (!query || !response) {
+                alert('Заполните оба поля');
+                return;
+            }
+            
+            try {
+                log(`📝 Добавление примера: "${query}"`);
+                
+                const res = await fetch('/api/neural/training-example', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, response })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    document.getElementById('example-query').value = '';
+                    document.getElementById('example-response').value = '';
+                    log('✅ Пример добавлен');
+                } else {
+                    throw new Error(data.error);
+                }
+                
+            } catch (error) {
+                log(`❌ Ошибка добавления примера: ${error.message}`, 'error');
+            }
+        }
+
+        async function runTests() {
+            const testResults = document.getElementById('test-results');
+            
+            try {
+                testResults.textContent = 'Запуск тестов...';
+                log('🧪 Запуск тестов нейросети');
+                
+                const response = await fetch('/api/neural/test', { method: 'POST' });
+                const data = await response.json();
+                
+                if (data.success) {
+                    let results = 'Результаты тестирования:\n\n';
+                    data.testResults.forEach((result, index) => {
+                        results += `${index + 1}. "${result.query}"\n`;
+                        if (result.success) {
+                            results += `✅ ${result.response}\n\n`;
+                        } else {
+                            results += `❌ ${result.error}\n\n`;
+                        }
+                    });
+                    testResults.textContent = results;
+                    log('✅ Тесты завершены');
+                } else {
+                    throw new Error(data.error);
+                }
+                
+            } catch (error) {
+                testResults.textContent = `Ошибка тестирования: ${error.message}`;
+                log(`❌ Ошибка тестирования: ${error.message}`, 'error');
+            }
+        }
+
+        // Автозагрузка статистики при старте
+        window.addEventListener('load', () => {
+            log('🚀 Neural Dashboard запущен');
+            loadStats();
+            
+            // Обновляем статистику каждые 30 секунд
+            setInterval(loadStats, 30000);
+        });
+
+        // Обработка Enter в поле запроса
+        document.getElementById('query-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                generateResponse();
+            }
+        });
+    </script>
+</body>
+</html>

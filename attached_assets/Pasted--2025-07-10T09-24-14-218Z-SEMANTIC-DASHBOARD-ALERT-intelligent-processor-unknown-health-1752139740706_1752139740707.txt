@@ -1,0 +1,27 @@
+⚠️ [2025-07-10T09:24:14.218Z] SEMANTIC-DASHBOARD: 🚨 [ALERT] intelligent-processor: unknown → healthy (info) 
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency
+(node:2483) Warning: Accessing non-existent property 'checkHealth' of module exports inside circular dependency

@@ -1,0 +1,58 @@
+✅ Семантическая память подключена к LITE
+📂 LITE модель успешно загружена
+📚 LITE словарь загружен: 44 токенов
+🎉 BOOOMERANGS Neural LITE готов к работе!
+📊 Статистика LITE модели:
+   - Параметры: 2,458,412
+   - Архитектура: Lite Transformer (3 layers)
+   - Память: ~9 МБ
+✅ LITE нейросеть инициализирована за 25382мс
+📊 LITE модель: 2,458,412 параметров, ~9МБ
+📊 Прогресс операции "LITE Neural Network Initialization": 25%
+📡 Нет подключенных neural клиентов для broadcast
+📡 Broadcasting neural progress to 0 clients: {
+  type: 'neural_progress_update',
+  progress: 25,
+  operation: 'LITE Neural Network Initialization',
+  status: 'running',
+  details: 'Создание облегченной архитектуры...',
+  timestamp: '2025-07-12T11:48:56.406Z'
+}
+📊 Прогресс операции "LITE Neural Network Initialization": 50%
+📡 Нет подключенных neural клиентов для broadcast
+📡 Broadcasting neural progress to 0 clients: {
+  type: 'neural_progress_update',
+  progress: 50,
+  operation: 'LITE Neural Network Initialization',
+  status: 'running',
+  details: 'Построение словаря...',
+  timestamp: '2025-07-12T11:48:57.407Z'
+}
+🔵 [2025-07-12T11:48:57.652Z] 🚀 Neural Lite initialization requested 
+⏳ Инициализация уже в процессе, ждем завершения...
+📊 Прогресс операции "LITE Neural Network Initialization": 75%
+📡 Нет подключенных neural клиентов для broadcast
+📡 Broadcasting neural progress to 0 clients: {
+  type: 'neural_progress_update',
+  progress: 75,
+  operation: 'LITE Neural Network Initialization',
+  status: 'running',
+  details: 'Компиляция модели...',
+  timestamp: '2025-07-12T11:48:58.908Z'
+}
+🔍 [WebSocket] Health check - 0 clients connected
+📊 Прогресс операции "LITE Neural Network Initialization": 90%
+📡 Нет подключенных neural клиентов для broadcast
+📡 Broadcasting neural progress to 0 clients: {
+  type: 'neural_progress_update',
+  progress: 90,
+  operation: 'LITE Neural Network Initialization',
+  status: 'running',
+  details: 'Финализация инициализации...',
+  timestamp: '2025-07-12T11:49:00.909Z'
+}
+✅ Операция "LITE Neural Network Initialization" завершена за 6006мс
+📡 Нет подключенных neural клиентов для broadcast
+11:49:01 AM [express] POST /api/neural/init-lite 200 in 6008ms :: {"success":true,"message":"Lite neu…
+11:49:01 AM [express] POST /api/neural/init-lite 200 in 4312ms :: {"success":true,"message":"Lite neu…
+🔍 [WebSocket] Health check - 0 clients connected

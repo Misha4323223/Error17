@@ -1,0 +1,99 @@
+ЭТАП 1: ИСПРАВЛЕНИЕ ГЛАВНОЙ ПРИЧИНЫ - СТАТИЧНЫЕ ОТВЕТЫ
+Файл: server/semantic-memory/natural-language-generator.cjs
+Строки: 411-416 (функция generateConversationalResponse)
+
+Текущий код:
+
+generateConversationalResponse(thought) {
+  return `Интересно! Давай поговорим об этом.
+Чем могу помочь или о чем хочешь поболтать? Я хорошо разбираюсь в творческих задачах, но с удовольствием обсужу что угодно! 😊`;
+}
+Исправленный код:
+
+generateConversationalResponse(thought) {
+  const input = thought.userInput.toLowerCase();
+  const responses = [];
+  
+  // Анализ тона и содержания
+  if (input.includes('чертина') || input.includes('черт')) {
+    responses.push("Ого, экспрессивно! 😄 Что случилось?");
+    responses.push("Понимаю, что-то задело! Расскажи, что происходит?");
+  } else if (input.includes('что ты говоришь') || input.includes('не верю')) {
+    responses.push("А ты сомневаешься? Давай разберемся что к чему!");
+    responses.push("Хм, кажется я тебя удивил! Что именно показалось странным?");
+  } else if (input.includes('привет') || input.includes('здравствуй')) {
+    responses.push("Привет! Отличное начало для разговора!");
+    responses.push("Здравствуй! Рад тебя видеть!");
+  } else {
+    responses.push("Интересная мысль! Развей тему дальше.");
+    responses.push("Любопытно! А что ты об этом думаешь?");
+    responses.push("Хм, расскажи больше - заинтриговал!");
+  }
+  
+  const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+  
+  return `${randomResponse}
+Чем могу помочь? Готов обсудить что угодно или помочь с творческими задачами!`;
+}
+ЭТАП 2: УЛУЧШЕНИЕ АНАЛИЗА НАМЕРЕНИЙ В THINKING PROCESSOR
+Файл: server/semantic-memory/natural-language-generator.cjs
+Строки: 58-85 (функция understand)
+
+Добавить больше паттернов распознавания:
+
+understand(input) {
+  const understanding = {
+    intent: 'unknown',
+    emotion: 'neutral', 
+    directness: 'medium',
+    personalConnection: false
+  };
+  const lowerInput = input.toLowerCase();
+  
+  // Эмоциональные паттерны
+  if (lowerInput.includes('чертина') || lowerInput.includes('черт') || lowerInput.includes('блин')) {
+    understanding.intent = 'emotional_expression';
+    understanding.emotion = 'frustrated_casual';
+    understanding.directness = 'high';
+  } else if (lowerInput.includes('что ты говоришь') || lowerInput.includes('не верю') || lowerInput.includes('серьезно')) {
+    understanding.intent = 'disbelief_question';
+    understanding.emotion = 'skeptical';
+    understanding.personalConnection = true;
+  } else if (lowerInput.includes('кто тебя создал') || lowerInput.includes('кто ты')) {
+    understanding.intent = 'personal_question';
+    understanding.personalConnection = true;
+  } else if (lowerInput.includes('привет') || lowerInput.includes('расскажи о себе')) {
+    understanding.intent = 'introduction';
+    understanding.personalConnection = true;
+  }
+  // ... остальная логика
+  
+  return understanding;
+}
+ЭТАП 3: ИСПРАВЛЕНИЕ ВЫБОРА СТРАТЕГИИ ОТВЕТА
+Файл: server/semantic-memory/natural-language-generator.cjs
+Строки: 49-54 (функция chooseResponseStrategy)
+
+Найти функцию и добавить логику:
+
+chooseResponseStrategy(thought) {
+  const intent = thought.understanding.intent;
+  const emotion = thought.understanding.emotion;
+  
+  switch (intent) {
+    case 'emotional_expression':
+      return 'empathetic_response';
+    case 'disbelief_question':
+      return 'clarification_response';
+    case 'personal_question':
+      return 'personal_sharing';
+    case 'introduction':
+      return 'friendly_introduction';
+    case 'curiosity_exploration':
+      return 'knowledge_sharing';
+    case 'creative_consultation':
+      return 'expert_advice';
+    default:
+      return 'adaptive_conversation';
+  }
+}
