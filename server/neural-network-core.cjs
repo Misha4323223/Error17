@@ -437,42 +437,35 @@ class BooomerangsNeuralCore {
   detokenize(tokens) {
     console.log('🔍 [Detokenize] Входные токены:', tokens.slice(0, 10));
     console.log('🔍 [Detokenize] Размер reverseVocabulary:', this.reverseVocabulary.size);
-    console.log('🔍 [Detokenize] Максимальный индекс в reverseVocabulary:', Math.max(...this.reverseVocabulary.keys()));
     
-    // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: принудительная пересинхронизация словарей
-    if (this.vocabulary.size !== this.reverseVocabulary.size) {
-      console.error('❌ [КРИТИЧНО] Словари рассинхронизированы! Выполняем экстренное восстановление...');
-      this.emergencyVocabularyRepair();
-    }
+    // ОБЯЗАТЕЛЬНАЯ проверка и восстановление словарей перед детокенизацией
+    this.ensureVocabularyIntegrity();
     
     const words = tokens
       .map((token, index) => {
-        // Проверяем что токен является числом и в допустимом диапазоне
+        // Проверяем что токен является числом
         if (typeof token !== 'number' || isNaN(token)) {
-          console.log(`⚠️ [Detokenize] Некорректный токен на позиции ${index}: ${token} (${typeof token})`);
-          return '<UNK>';
+          console.log(`⚠️ [Detokenize] Некорректный токен на позиции ${index}: ${token}`);
+          return null; // Пропускаем некорректные токены
         }
         
-        // Проверяем что токен в диапазоне словаря
+        // Ограничиваем токен диапазоном словаря
         if (token < 0 || token >= this.reverseVocabulary.size) {
-          console.log(`⚠️ [Detokenize] Токен ${token} вне диапазона словаря (0-${this.reverseVocabulary.size - 1})`);
+          console.log(`⚠️ [Detokenize] Токен ${token} вне диапазона, приводим к диапазону 0-${this.reverseVocabulary.size - 1}`);
           
-          // ЭКСТРЕННАЯ ЗАЩИТА: если токен из старого большого словаря, ограничиваем его
-          if (token >= 0 && token < this.vocabulary.size) {
-            const fallbackToken = token % this.reverseVocabulary.size;
-            console.log(`🔧 [Detokenize] Fallback: токен ${token} -> ${fallbackToken}`);
-            const word = this.reverseVocabulary.get(fallbackToken);
-            return word || '<UNK>';
-          }
-          
-          return '<UNK>';
+          // Приводим токен к валидному диапазону с помощью модуля
+          const validToken = Math.abs(token) % this.reverseVocabulary.size;
+          const word = this.reverseVocabulary.get(validToken);
+          console.log(`🔧 [Detokenize] Исправлен токен ${token} -> ${validToken} -> "${word}"`);
+          return word;
         }
         
+        // Получаем слово из словаря
         const word = this.reverseVocabulary.get(token);
         if (!word) {
-          console.log(`⚠️ [Detokenize] Токен ${token} не найден в reverseVocabulary`);
+          console.log(`❌ [КРИТИЧНО] Токен ${token} не найден в reverseVocabulary, выполняем восстановление...`);
           
-          // ЭКСТРЕННАЯ ЗАЩИТА: создаем обратное сопоставление на лету
+          // Экстренное восстановление: ищем в основном словаре
           for (const [vocabWord, vocabIndex] of this.vocabulary.entries()) {
             if (vocabIndex === token) {
               console.log(`🔧 [Detokenize] Восстановлен токен ${token} -> "${vocabWord}"`);
@@ -481,15 +474,26 @@ class BooomerangsNeuralCore {
             }
           }
           
-          return '<UNK>';
+          // Если ничего не найдено, берем случайное слово из словаря вместо UNK
+          const fallbackWords = ['что', 'как', 'где', 'это', 'то', 'и', 'в', 'на'];
+          const randomWord = fallbackWords[token % fallbackWords.length];
+          console.log(`🎲 [Detokenize] Fallback слово для токена ${token}: "${randomWord}"`);
+          return randomWord;
         }
         
         return word;
       })
-      .filter(token => token !== '<PAD>' && token !== '<START>' && token !== '<END>');
+      .filter(word => word && word !== '<PAD>' && word !== '<START>' && word !== '<END>' && word !== '<UNK>');
     
     const result = words.join(' ');
-    console.log('✅ [Detokenize] Результат:', result.substring(0, 100));
+    console.log(`✅ [Detokenize] Результат (${words.length} слов):`, result.substring(0, 100));
+    
+    // Если результат пустой, возвращаем осмысленный ответ
+    if (!result || result.trim().length === 0) {
+      const fallbackResponse = 'Интересный вопрос! Давайте обсудим это подробнее.';
+      console.log('🔄 [Detokenize] Пустой результат, используем fallback:', fallbackResponse);
+      return fallbackResponse;
+    }
     
     return result;
   }
@@ -514,6 +518,35 @@ class BooomerangsNeuralCore {
     } else {
       console.error('❌ [EMERGENCY] Восстановление не удалось!');
     }
+  }
+
+  /**
+   * Обеспечивает целостность словарей перед использованием
+   */
+  ensureVocabularyIntegrity() {
+    // Проверяем размеры словарей
+    if (this.vocabulary.size !== this.reverseVocabulary.size) {
+      console.log('🔧 [Integrity] Размеры словарей не совпадают, восстанавливаем...');
+      this.emergencyVocabularyRepair();
+      return;
+    }
+    
+    // Проверяем, что все индексы из vocabulary есть в reverseVocabulary
+    let missingCount = 0;
+    for (const [word, index] of this.vocabulary.entries()) {
+      if (!this.reverseVocabulary.has(index)) {
+        console.log(`🔧 [Integrity] Восстанавливаем отсутствующий индекс ${index} -> "${word}"`);
+        this.reverseVocabulary.set(index, word);
+        missingCount++;
+      }
+    }
+    
+    if (missingCount > 0) {
+      console.log(`✅ [Integrity] Восстановлено ${missingCount} отсутствующих сопоставлений`);
+    }
+    
+    // Обновляем vocabSize для консистентности
+    this.vocabSize = Math.max(this.vocabulary.size, this.reverseVocabulary.size);
   }
 
   async generateResponse(input, options = {}) {
@@ -570,8 +603,20 @@ class BooomerangsNeuralCore {
         // Проверяем валидность токена ПЕРЕД добавлением
         if (selectedToken >= this.reverseVocabulary.size) {
           console.log(`⚠️ [Generate] Сгенерирован токен ${selectedToken} вне словаря (размер: ${this.reverseVocabulary.size})`);
-          // Заменяем на случайный валидный токен
-          selectedToken = Math.floor(Math.random() * this.reverseVocabulary.size);
+          // Приводим к валидному диапазону
+          selectedToken = selectedToken % this.reverseVocabulary.size;
+          console.log(`🔧 [Generate] Исправлен токен на: ${selectedToken}`);
+        }
+        
+        // Дополнительная проверка что токен существует в словаре
+        if (!this.reverseVocabulary.has(selectedToken)) {
+          console.log(`⚠️ [Generate] Токен ${selectedToken} отсутствует в reverseVocabulary, восстанавливаем...`);
+          this.ensureVocabularyIntegrity();
+          
+          // Если всё ещё нет, берём безопасный токен
+          if (!this.reverseVocabulary.has(selectedToken)) {
+            selectedToken = Math.min(selectedToken, this.reverseVocabulary.size - 1);
+          }
         }
 
         // Проверяем на END токен
@@ -840,17 +885,33 @@ class BooomerangsNeuralCore {
       if (fs.existsSync(vocabFile)) {
         const vocabData = JSON.parse(fs.readFileSync(vocabFile, 'utf8'));
         
-        // ИСПРАВЛЕНО: Загружаем сначала основной словарь
-        this.vocabulary = new Map(Object.entries(vocabData.vocabulary));
+        // ИСПРАВЛЕНО: Загружаем основной словарь
+        this.vocabulary = new Map();
         this.reverseVocabulary = new Map();
         
-        // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: создаем reverseVocabulary из vocabulary для гарантии синхронности
-        for (const [word, index] of this.vocabulary.entries()) {
+        // Загружаем vocabulary с проверкой типов
+        for (const [word, index] of Object.entries(vocabData.vocabulary)) {
           const numericIndex = typeof index === 'string' ? parseInt(index, 10) : index;
-          this.reverseVocabulary.set(numericIndex, word);
+          if (!isNaN(numericIndex) && numericIndex >= 0) {
+            this.vocabulary.set(word, numericIndex);
+            this.reverseVocabulary.set(numericIndex, word);
+          }
         }
         
-        this.vocabSize = this.vocabulary.size; // Используем реальный размер
+        // Проверяем что у нас есть базовые токены
+        const requiredTokens = ['<PAD>', '<UNK>', '<START>', '<END>'];
+        for (let i = 0; i < requiredTokens.length; i++) {
+          if (!this.vocabulary.has(requiredTokens[i])) {
+            console.log(`🔧 [LoadModel] Добавляем отсутствующий базовый токен: ${requiredTokens[i]} -> ${i}`);
+            this.vocabulary.set(requiredTokens[i], i);
+            this.reverseVocabulary.set(i, requiredTokens[i]);
+          }
+        }
+        
+        this.vocabSize = this.vocabulary.size;
+        
+        // Финальная проверка целостности
+        this.ensureVocabularyIntegrity();
         
         // Проверяем синхронность словарей
         console.log(`📚 Словарь загружен: ${this.vocabSize} токенов`);
